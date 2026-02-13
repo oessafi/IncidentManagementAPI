@@ -1,10 +1,12 @@
 using IncidentManagementAPI.Common;
 using IncidentManagementAPI.PlatformData;
+using IncidentManagementAPI.TenantData;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +55,14 @@ builder.Services.AddScoped<AuditService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<TenantProvisioningService>();
+builder.Services.AddSingleton<TenantDbContextFactory>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 
 //

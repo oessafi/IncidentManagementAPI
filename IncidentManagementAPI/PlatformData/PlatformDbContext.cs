@@ -18,10 +18,22 @@ namespace IncidentManagementAPI.PlatformData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<Tenant>().HasIndex(x => x.TenantKey).IsUnique();
-            modelBuilder.Entity<RefreshToken>().HasIndex(x => x.TokenHash);
-            modelBuilder.Entity<MfaChallenge>().HasIndex(x => x.TempTokenHash);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Tenant>()
+                .HasIndex(x => x.TenantKey)
+                .IsUnique();
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(x => x.TokenHash);
+
+            modelBuilder.Entity<MfaChallenge>()
+                .HasIndex(x => x.TempTokenHash);
+
         }
     }
 }
